@@ -181,20 +181,22 @@ if __name__ == "__main__":
                     loss += example_loss
             loss = loss / minibatch_size
         print("Validation completed for epoch {}".format(epoch + 1))
-        print("Validation accuracy for epoch {}: {}".format(epoch + 1, correct / total))
-        print("Validation time for this epoch: {}".format(time.time() - start_time))
 
-    # write out to results/test.out
-    # Assuming `test_data` is your test dataset and `model` is your trained model
+# After training and validation
+print("Validation accuracy for epoch {}: {}".format(epoch + 1, correct / total))
+print("Validation time for this epoch: {}".format(time.time() - start_time))
+
+# Convert the test data to vector representations
+print("========== Vectorizing test data ==========")
 test_data = convert_to_vector_representation(test_data, word2index)
 
 # Create/open the file in write mode
 with open('results/test.out', 'w') as f:
     # Iterate over the test data
-    for input_vector, gold_label in test_data:
+    for input_vector, _ in test_data:  # We don't have labels for test data, so we use a placeholder
         # Get the model's prediction
         predicted_vector = model(input_vector)
         predicted_label = torch.argmax(predicted_vector).item()
 
-        # Write the result to the file
-        f.write(f'{gold_label}\t{predicted_label}\n')
+        # Write the predicted label to the file
+        f.write(f'{predicted_label}\n')
