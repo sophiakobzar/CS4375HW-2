@@ -24,7 +24,8 @@ class FFNN(nn.Module):
         self.output_dim = 5
         self.W2 = nn.Linear(h, self.output_dim)
 
-        self.softmax = nn.LogSoftmax() # The softmax function that converts vectors into probability distributions; computes log probabilities for computational benefits
+        #self.softmax = nn.LogSoftmax() # The softmax function that converts vectors into probability distributions; computes log probabilities for computational benefits
+        self.softmax = nn.LogSoftmax(dim=0)
         self.loss = nn.NLLLoss() # The cross-entropy/negative log likelihood loss taught in class
 
     def compute_Loss(self, predicted_vector, gold_label):
@@ -185,6 +186,10 @@ if __name__ == "__main__":
 # After training and validation
 print("Validation accuracy for epoch {}: {}".format(epoch + 1, correct / total))
 print("Validation time for this epoch: {}".format(time.time() - start_time))
+
+# Load the test data
+print("========== Loading test data ==========")
+_, test_data = load_data(args.train_data, args.test_data) # We don't need labels for the test data, so we use a placeholder
 
 # Convert the test data to vector representations
 print("========== Vectorizing test data ==========")
