@@ -16,6 +16,5 @@ One example on running the code:
 
 **RNN**
 
-``python rnn.py --hidden_dim 32 --epochs 10 ``
-``--train_data training.json --val_data validation.json``
-
+``python rnn.py --hidden_dim 100 --epochs 1 ``
+``--train_data training.json --val_data validation.json --test_data test.json``
