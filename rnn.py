@@ -29,16 +29,16 @@ class RNN(nn.Module):
     def compute_Loss(self, predicted_vector, gold_label):
         return self.loss(predicted_vector, gold_label)
 
-def forward(self, inputs):
-    # obtain hidden layer representation
-    _, hidden = self.rnn(inputs)
-    # obtain output layer representations
-    output = self.W(hidden)
-    # sum over output 
-    output_sum = torch.sum(output, dim=0)
-    # obtain probability dist.
-    predicted_vector = self.softmax(output_sum)
-    return predicted_vector
+    def forward(self, inputs):
+        # obtain hidden layer representation
+        _, hidden = self.rnn(inputs)
+        # obtain output layer representations
+        output = self.W(hidden)
+        # sum over output 
+        output_sum = torch.sum(output, dim=0)
+        # obtain probability dist.
+        predicted_vector = self.softmax(output_sum)
+        return predicted_vector
 
 
 
@@ -88,8 +88,8 @@ if __name__ == "__main__":
 
     last_train_accuracy = 0
     last_validation_accuracy = 0
-
-    while not stopping_condition:
+    num_epochs = args.epochs  # Number of epochs is set from command line argument
+    for epoch in range(num_epochs):
         random.shuffle(train_data)
         model.train()
         # You will need further code to operationalize training, ffnn.py may be helpful
@@ -116,7 +116,10 @@ if __name__ == "__main__":
                 vectors = [word_embedding[i.lower()] if i.lower() in word_embedding.keys() else word_embedding['unk'] for i in input_words ]
 
                 # Transform the input into required shape
+                vectors = np.array(vectors)
                 vectors = torch.tensor(vectors).view(len(vectors), 1, -1)
+
+                # Get the output from the model
                 output = model(vectors)
 
                 # Get loss
@@ -157,6 +160,7 @@ if __name__ == "__main__":
             vectors = [word_embedding[i.lower()] if i.lower() in word_embedding.keys() else word_embedding['unk'] for i
                        in input_words]
 
+            vectors = np.array(vectors)
             vectors = torch.tensor(vectors).view(len(vectors), 1, -1)
             output = model(vectors)
             predicted_label = torch.argmax(output)
